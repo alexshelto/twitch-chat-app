@@ -23,6 +23,7 @@
     "electron": "^10.1.5"
   },
   "dependencies": {
-    "electron-reload": "^1.5.0"
+    "electron-reload": "^1.5.0",
+    "tmi.js": "^1.5.0"
   }
 }

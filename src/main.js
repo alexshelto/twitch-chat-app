@@ -12,11 +12,11 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    resizable: true
-    // not yet?
-    // webPreferences: {
+    resizable: true,
+    webPreferences: {
+      nodeIntegration: true
     //   preload: path.join(__dirname, '/src/preload.js')
-    // }
+    }
   });
   //load the content file
   mainWindow.loadFile('./src/index.html');
