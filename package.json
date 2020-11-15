@@ -1,0 +1,25 @@
+{
+  "name": "twitch-chat-app",
+  "version": "1.0.0",
+  "description": "desktop application to read twitch chat",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexshelto/twitch-chat-app.git"
+  },
+  "keywords": [
+    "electron"
+  ],
+  "author": "Alex Shelton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexshelto/twitch-chat-app/issues"
+  },
+  "homepage": "https://github.com/alexshelto/twitch-chat-app#readme",
+  "devDependencies": {
+    "electron": "^10.1.5"
+  }
+}
