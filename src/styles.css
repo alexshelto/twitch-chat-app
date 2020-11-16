@@ -26,3 +26,9 @@ body {
 .message .display-name {
   font-weight: bold;
 }
+
+.emoticon {
+  /* Prob not the best way to resize emotes */
+  height: 5vh;
+  width: 5vh;
+}

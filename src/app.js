@@ -1,6 +1,16 @@
+/**
+ * app.js
+ * Handles connecting tci client and grabbing twitch messages
+ * Packages message data and sends to front end to be displayed
+ */
+
 
 const tmi = require('tmi.js');
 const DOMPurify = require('dompurify');
+
+
+
+
 //sanitize text so we dont get any XXS issues 
 function sanitize(text) {
   return DOMPurify.sanitize(text, { FORBID_ATTR: [ 'onerror', 'onload' ], FORBID_TAGS: [ 'script', 'iframe' ] });
@@ -37,6 +47,26 @@ function displayChatContent(content) {
 
 
 
+//Function pulled from https://github.com/tmijs/tmi.js/issues/11
+//Credit goes to AlcaDesign, github: https://github.com/AlcaDesign
+function formatEmotes(text, emotes) {
+  var splitText = text.split('');
+  for(var i in emotes) {
+      var e = emotes[i];
+      for(var j in e) {
+          var mote = e[j];
+          if(typeof mote == 'string') {
+              mote = mote.split('-');
+              mote = [parseInt(mote[0]), parseInt(mote[1])];
+              var length =  mote[1] - mote[0],
+                  empty = Array.apply(null, new Array(length + 1)).map(function() { return '' });
+              splitText = splitText.slice(0, mote[0]).concat(empty).concat(splitText.slice(mote[1] + 1, splitText.length));
+              splitText.splice(mote[0], 1, '<img class="emoticon" src="http://static-cdn.jtvnw.net/emoticons/v1/' + i + '/3.0">');
+          }
+      }
+  }
+  return splitText.join('');
+}
 
 
 //creating tmi client
@@ -45,7 +75,7 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true
   },
-  channels: ['#shroud'] //change to your channel 
+  channels: ['#sodapoppin'] //change to your channel 
 });
 //connecting client to twitch chat channel
 client.connect();
@@ -64,13 +94,11 @@ message: String - Message received
 self: Boolean - Message was sent by the client
 */
 client.on('message', async (channel, userstate, message, self) => { 
-  //dont listen to my own messages
-  if (self) return;
 
   const content = {
     id: userstate.id,
     displayName: userstate['display-name'],
-    message: message,
+    message: formatEmotes(message, userstate.emotes),
   };
 
   displayChatContent(content);
