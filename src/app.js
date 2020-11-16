@@ -1,6 +1,6 @@
 
 const tmi = require('tmi.js');
-
+const DOMPurify = require('dompurify');
 //sanitize text so we dont get any XXS issues 
 function sanitize(text) {
   return DOMPurify.sanitize(text, { FORBID_ATTR: [ 'onerror', 'onload' ], FORBID_TAGS: [ 'script', 'iframe' ] });
@@ -20,13 +20,16 @@ function sanitize(text) {
 
 
 function displayChatContent(content) {
-  const element = document.createElement('div');
-  element.classList.add('message');
-  element.innerHTML = `
-    <span class="username">${content.displayName}</span>
-    <span class="message">${sanitize(content.message)}</span>`;
-  messages.appendChild(element);
+  const element = document.createElement('div');  //creating a new html element 
+  element.classList.add('message');               //add a class name to element for css styling
 
+  element.innerHTML = `
+    <span class="display-name" >${content.displayName}:</span>
+    <span class="message">${sanitize(content.message)}</span>`;
+
+  messages.appendChild(element); //append the new html element to that div 'messages'
+  
+  //auto scroll
   setTimeout(() => {
     messages.scrollTop = messages.scrollHeight;
   });
@@ -42,7 +45,7 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true
   },
-  channels: ['#'] //change to your channel 
+  channels: ['#shroud'] //change to your channel 
 });
 //connecting client to twitch chat channel
 client.connect();
@@ -73,5 +76,5 @@ client.on('message', async (channel, userstate, message, self) => {
   displayChatContent(content);
 
   //dev debug stuff
-  console.log(`${userstate['display-name']}: ${message}`);
+  // console.log(`${userstate['display-name']}: ${message}`);
 });
