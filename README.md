@@ -3,12 +3,13 @@ desktop electron app to load twitch chat messages
 
 
 ## Todo
-- [x] Set up an electron window
+- [x] set up an electron window
 - [x] connect client to twitch chat
 - [x] action on message
+- [x] prevent xxs input 
 - [ ] convert emote string to display
 - [ ] package message, sender, & timestamp
-- [ ] send package to front end to display
+- [x] send package to front end to display
 - [ ] clean up styling 
 
 
