@@ -33,11 +33,12 @@ function displayChatContent(content) {
   const element = document.createElement('div');  //creating a new html element 
   element.classList.add('message');               //add a class name to element for css styling
 
-  // const color = content.color || '#6441a5';
+  const color = content.color || '#6441a5';
 
   element.innerHTML = `
   <div class="message-blob">
-    <span class="display-name" >${content.displayName}:</span>
+    <span class="display-name" style="color: ${color}">${content.displayName}:</span>
+    <br>
     <span class="message">${sanitize(content.message)}</span>
   </div>`;
 
