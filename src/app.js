@@ -33,9 +33,13 @@ function displayChatContent(content) {
   const element = document.createElement('div');  //creating a new html element 
   element.classList.add('message');               //add a class name to element for css styling
 
+  // const color = content.color || '#6441a5';
+
   element.innerHTML = `
+  <div class="message-blob">
     <span class="display-name" >${content.displayName}:</span>
-    <span class="message">${sanitize(content.message)}</span>`;
+    <span class="message">${sanitize(content.message)}</span>
+  </div>`;
 
   messages.appendChild(element); //append the new html element to that div 'messages'
   
@@ -75,7 +79,7 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true
   },
-  channels: ['#sodapoppin'] //change to your channel 
+  channels: ['#'] //change to your channel 
 });
 //connecting client to twitch chat channel
 client.connect();
@@ -97,11 +101,13 @@ client.on('message', async (channel, userstate, message, self) => {
 
   const content = {
     id: userstate.id,
+    color: userstate['color'],
     displayName: userstate['display-name'],
     message: formatEmotes(message, userstate.emotes),
   };
 
   displayChatContent(content);
+  console.log(content.color);
 
   //dev debug stuff
   // console.log(`${userstate['display-name']}: ${message}`);

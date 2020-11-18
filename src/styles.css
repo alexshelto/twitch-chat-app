@@ -8,14 +8,18 @@ body {
   position: relative;
 }
 
-
+.message-blob {
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #0D2066;
+}
 
 #messages {
   margin: 2vh;
   height: 92vh;
   overflow-y: auto;  /*auto scroll*/
   scrollbar-width: none;
-  outline: 8vh solid rgba(42, 230, 36, 0.6);;
+  outline: 8vh solid rgba(42, 230, 36, 0.6);
 }
 
 /* message is the generated html element from the text */
