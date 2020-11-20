@@ -22,6 +22,6 @@ dependencies:
 
 
 ![alt text](https://raw.githubusercontent.com/alexshelto/twitch-chat-app/main/screenshots/chat.png)
-<img data-canonical-src="https://raw.githubusercontent.com/alexshelto/twitch-chat-app/main/screenshots/chat.png" width="200" height="400" />
+<img src="https://raw.githubusercontent.com/alexshelto/twitch-chat-app/main/screenshots/chat.png" width="200" height="400" />
 
 
