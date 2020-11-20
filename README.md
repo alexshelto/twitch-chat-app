@@ -21,7 +21,7 @@ dependencies:
 
 
 
-![alt text](https://raw.githubusercontent.com/alexshelto/twitch-chat-app/master/screenshots/chat.png)
+![alt text](https://raw.githubusercontent.com/alexshelto/twitch-chat-app/main/screenshots/chat.png)
 
 
 
