@@ -17,17 +17,6 @@ function sanitize(text) {
 }
 
 
-// function getMessageAndEmotes(userstate, message) {
-//   let messageStr = '';
-//   //if there is emotes in the message
-//   if(userstate.emotes) {
-//     const emoteIDs = Object.keys(userstate.emotes);  //creates an array object of all the unique emote ids
-//     console.log(emoteIDs);
-//   }
-//   return messageStr || message
-// }
-
-
 
 function displayChatContent(content) {
   const element = document.createElement('div');  //creating a new html element 

@@ -15,14 +15,14 @@ desktop electron app to load twitch chat messages
 
 
 
-
-
-
-
 dependencies:
 * Electron
 * tmjs
 * DOMPurify
+
+
+
+![alt text](https://raw.githubusercontent.com/alexshelto/twitch-chat-app/master/screenshots/chat.png)
 
 
 
