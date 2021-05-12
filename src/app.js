@@ -9,8 +9,6 @@ const tmi = require('tmi.js');
 const DOMPurify = require('dompurify');
 
 
-
-
 //sanitize text so we dont get any XXS issues 
 function sanitize(text) {
   return DOMPurify.sanitize(text, { FORBID_ATTR: [ 'onerror', 'onload' ], FORBID_TAGS: [ 'script', 'iframe' ] });
@@ -32,6 +30,19 @@ function displayChatContent(content) {
   </div>`;
 
   messages.appendChild(element); //append the new html element to that div 'messages'
+  comments.append(element);
+
+
+
+  /*
+  let len = messages.childElementCount; 
+  var msg_cap = 5;
+  if (len > msg_cap) {
+    messages.removeChild();
+    }
+  }
+  */
+
   
   //auto scroll
   setTimeout(() => {
@@ -69,10 +80,6 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true
   },
-  identity: {
-		username: 'be9ns',
-		password: 'oauth:my_bot_token'
-	},
   channels: ['#ceremor'] //change to your channel 
 });
 //connecting client to twitch chat channel
