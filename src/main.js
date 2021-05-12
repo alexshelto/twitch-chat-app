@@ -1,8 +1,7 @@
-const { app, BrowserWindow,Menu,ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
 require('electron-reload')(__dirname); //dev stuff 
-
 
 
 let mainWindow;
@@ -11,6 +10,7 @@ let chatBrowserWindow;
 
 
 function createWindow () {
+
   mainWindow = new BrowserWindow({
     width: 400,
     height: 400,
@@ -20,12 +20,10 @@ function createWindow () {
     //   preload: path.join(__dirname, '/src/preload.js')
     }
   });
-  //load the content file
-  mainWindow.loadFile('./src/index.html');
 
-  mainWindow.on('closed', function() {
-      mainWindow = null;
-  });
+  //load the content file
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
+
 }
 
 
@@ -33,6 +31,9 @@ function createWindow () {
 // Launching the main window
 app.on('ready',() => {
   createWindow();
+
+  mainWindow.on('closed', () => app.quit());
+
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
 
@@ -78,20 +79,6 @@ const menuTemplate = [
       }
     ]
   }
-]
+];
 
 
-
-/*
- * Below is for closing windows and killing program.
- */
-  //handling window close
-
-//quit when all windows are closed
-app.on('window-all-closed', () => {
-  app.quit()
-});
-
-app.on('activate', function () {
-  if (mainWindow === null) createWindow();
-});
