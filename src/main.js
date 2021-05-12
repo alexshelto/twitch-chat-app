@@ -22,7 +22,7 @@ function createWindow () {
   mainWindow.loadFile('./src/index.html');
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+//  mainWindow.webContents.openDevTools()
 
   //handling window close
   mainWindow.on('closed', function() {
@@ -33,7 +33,6 @@ function createWindow () {
 
 //creating window method
 app.whenReady().then(createWindow);
-
 //quit when all windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

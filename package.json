@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/alexshelto/twitch-chat-app#readme",
   "devDependencies": {
-    "electron": "^10.1.5"
+    "electron": "^10.4.1"
   },
   "dependencies": {
-    "dompurify": "^2.2.2",
+    "dompurify": "^2.2.7",
     "electron-reload": "^1.5.0",
-    "tmi.js": "^1.5.0"
+    "tmi.js": "^1.7.5"
   }
 }

@@ -69,7 +69,11 @@ const client = new tmi.Client({
     secure: true,
     reconnect: true
   },
-  channels: ['#'] //change to your channel 
+  identity: {
+		username: 'be9ns',
+		password: 'oauth:my_bot_token'
+	},
+  channels: ['#ceremor'] //change to your channel 
 });
 //connecting client to twitch chat channel
 client.connect();
@@ -88,7 +92,6 @@ message: String - Message received
 self: Boolean - Message was sent by the client
 */
 client.on('message', async (channel, userstate, message, self) => { 
-
   const content = {
     id: userstate.id,
     color: userstate['color'],
