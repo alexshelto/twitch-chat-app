@@ -15,9 +15,9 @@ desktop electron app to load twitch chat messages
 
 
 dependencies:
-* Electron
-* tmjs
-* DOMPurify
+* Electron : js desktop framework
+* tmjs : Twitch integration
+* DOMPurify : Cleaning inputs to DOM so theres no funny business 
 
 
 
