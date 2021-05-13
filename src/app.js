@@ -7,7 +7,6 @@
 
 const tmi = require('tmi.js');
 const DOMPurify = require('dompurify');
-
 const { ipcRenderer } = require('electron');
 
 
@@ -15,9 +14,10 @@ var client; // discord client reference
 var init = true;
 var useChannel = 'smoke';
 
-var userFilter = [];
+//var useChannel = 'be9ns';
 
-
+// list of usernames, once size > 0 will only show chat from users in this list
+var userFilter = []; 
 
 
 
@@ -39,11 +39,13 @@ function newClient(channelName) {
     channels: [channelName] //change to your channel 
   });
   client.connect();
+  title.innerText = `Twitch chat: ${channelName}`; 
 }
 
 
 
   
+//TODO: broke asf 
 ipcRenderer.on('get-chat:channel', (event, channelName) => {
   /*
   element.innerText = channelClientSees;
@@ -57,10 +59,12 @@ ipcRenderer.on('get-chat:channel', (event, channelName) => {
   client = newClient(channelName);
 });
 
+// Communication from filter menu to add username to filter
 ipcRenderer.on('filter:username', (event, username) => {
   userFilter.push(username);
 });
 
+// Communication from filter menu to remove all filters
 ipcRenderer.on('filter:remove_all', (event) => {
   userFilter = [];
 });
@@ -103,6 +107,7 @@ function sanitize(text) {
 function displayChatContent(content) {
   const element = document.createElement('div');  //creating a new html element 
   element.classList.add('message');               //add a class name to element for css styling
+  
 
   const color = content.color || '#6441a5';
 
@@ -112,6 +117,15 @@ function displayChatContent(content) {
     <br>
     <span class="message">${sanitize(content.message)}</span>
   </div>`;
+
+
+
+  // Removing old chat from dom
+  let msgCount = document.getElementById('messages').childElementCount;
+  if (msgCount > 15) {
+    var list = document.getElementById("messages");
+    list.removeChild(list.childNodes[0]);   
+  }
 
   messages.appendChild(element); //append the new html element to that div 'messages'
 

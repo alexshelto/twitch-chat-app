@@ -76,7 +76,7 @@ function createFilterWindow() {
   filterWindow.loadURL(`file://${__dirname}/filterChat.html`);
 }
 
-//IPC
+//Communication from filter window to add a username to filter
 ipcMain.on('filter:username', (event, username) => {
   mainWindow.webContents.send('filter:username', username);
   console.log(`Adding: ${username} to the chat filter`);
@@ -84,11 +84,11 @@ ipcMain.on('filter:username', (event, username) => {
   filterWindow.close();
 });
 
+// Communication from filter window to delete all filters
 ipcMain.on('filter:remove_all', (event) => {
   mainWindow.webContents.send('filter:remove_all');
   filterWindow.close();
 });
-
 
 
 
