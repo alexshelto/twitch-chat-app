@@ -57,6 +57,34 @@ ipcMain.on('get-chat:channel', (event, channelName) => {
 
 
 
+/*
+ * Chat filter users 
+ * user inputs usernames to filter chat
+ * functionality will only show those users
+ */
+function createFilterWindow() {
+  filterWindow = new BrowserWindow({
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      width: 300,
+      height: 200,
+      title: 'Filter Chat'
+    });
+  // Loading the html file for the window
+  filterWindow.loadURL(`file://${__dirname}/filterChat.html`);
+}
+
+//IPC
+ipcMain.on('filter:username', (event, username) => {
+  mainWindow.webContents.send('filter:username', username);
+  console.log(`Adding: ${username} to the chat filter`);
+  // Close the window after they enter and send the channel
+  filterWindow.close();
+});
+
+
 
 
 
@@ -72,6 +100,7 @@ const menuTemplate = [
       },
       {
         label: 'Filter',
+        click() { createFilterWindow(); }
       }
     ]
   }

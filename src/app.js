@@ -12,11 +12,10 @@ const { ipcRenderer } = require('electron');
 
 
 var client; // discord client reference 
-var changeClient;
-
 var init = true;
-var useChannel = 'summit1g';
+var useChannel = 'smoke';
 
+var userFilter = [];
 
 
 
@@ -24,7 +23,7 @@ var useChannel = 'summit1g';
 
 //newClient('#shroud');       // Creating the discord client
 if(init === true) {
-  client = newClient(useChannel);
+  newClient(useChannel);
   init = false;
 }
 
@@ -40,16 +39,12 @@ function newClient(channelName) {
     channels: [channelName] //change to your channel 
   });
   client.connect();
-  return client;
 }
 
 
 
   
 ipcRenderer.on('get-chat:channel', (event, channelName) => {
-
-  const element = document.createElement('h1');  //creating a new html element 
-
   /*
   element.innerText = channelClientSees;
   document.getElementById('messages').remove();
@@ -60,6 +55,10 @@ ipcRenderer.on('get-chat:channel', (event, channelName) => {
   client = null;
   //init = true;
   client = newClient(channelName);
+});
+
+ipcRenderer.on('filter:username', (event, username) => {
+  userFilter.push(username);
 });
 
 
@@ -74,18 +73,18 @@ message: String - Message received
 self: Boolean - Message was sent by the client
 */
 client.on('message', async (channel, userstate, message, self) => { 
-  const content = {
-    id: userstate.id,
-    color: userstate['color'],
-    displayName: userstate['display-name'],
-    message: formatEmotes(message, userstate.emotes),
-  };
+  if (userFilter.length === 0 || userFilter.includes(userstate['display-name'])) {
+    const content = {
+      id: userstate.id,
+      color: userstate['color'],
+      displayName: userstate['display-name'],
+      message: formatEmotes(message, userstate.emotes),
+    };
 
-  displayChatContent(content);
+    displayChatContent(content);
+  }
   //console.log(content.color);
 });
-
-
 
 
 
@@ -141,6 +140,5 @@ function formatEmotes(text, emotes) {
   }
   return splitText.join('');
 }
-
 
 

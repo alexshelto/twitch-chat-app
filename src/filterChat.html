@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Filter Chat by username</title>
+</head>
+<body>
+
+  <form>
+    <div>
+      <label> Enter the username </label>
+      <input autofocus />
+    </div>
+    <button type="submit">Add to filter</button>
+  </form>
+
+
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    
+    document.querySelector('form').addEventListener('submit', (channel) => {
+      channel.preventDefault();
+      const { value } = document.querySelector('input');
+      ipcRenderer.send('filter:username', value);
+    });
+
+  </script>
+
+</body>
+</html>
