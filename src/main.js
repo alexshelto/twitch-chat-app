@@ -84,6 +84,11 @@ ipcMain.on('filter:username', (event, username) => {
   filterWindow.close();
 });
 
+ipcMain.on('filter:remove_all', (event) => {
+  mainWindow.webContents.send('filter:remove_all');
+  filterWindow.close();
+});
+
 
 
 

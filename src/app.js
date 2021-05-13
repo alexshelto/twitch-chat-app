@@ -61,6 +61,10 @@ ipcRenderer.on('filter:username', (event, username) => {
   userFilter.push(username);
 });
 
+ipcRenderer.on('filter:remove_all', (event) => {
+  userFilter = [];
+});
+
 
 
 /*

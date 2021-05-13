@@ -9,12 +9,18 @@
 <body>
 
   <form>
-    <div>
+    <div class='filter form'>
       <label> Enter the username </label>
       <input autofocus />
     </div>
     <button type="submit">Add to filter</button>
   </form>
+
+  <div class='remove-container'>
+
+    <button type='button' onclick='removeFilters()'> remove all filters </button>
+  </div>
+  
 
 
   <script>
@@ -26,6 +32,10 @@
       const { value } = document.querySelector('input');
       ipcRenderer.send('filter:username', value);
     });
+
+    function removeFilters() {
+      ipcRenderer.send('filter:remove_all');
+    }
 
   </script>
 
