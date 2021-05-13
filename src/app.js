@@ -4,6 +4,7 @@
  * Packages message data and sends to front end to be displayed
  */
 
+//TODO: turns links from raw text into anchor tags
 
 const tmi = require('tmi.js');
 const DOMPurify = require('dompurify');
@@ -13,7 +14,6 @@ const { ipcRenderer } = require('electron');
 var client; // discord client reference 
 var init = true;
 var useChannel = 'smoke';
-
 //var useChannel = 'be9ns';
 
 // list of usernames, once size > 0 will only show chat from users in this list
@@ -47,16 +47,9 @@ function newClient(channelName) {
   
 //TODO: broke asf 
 ipcRenderer.on('get-chat:channel', (event, channelName) => {
-  /*
-  element.innerText = channelClientSees;
-  document.getElementById('messages').remove();
-  body.appendChild(element);
-  */
-
   client.disconnect();
-  client = null;
   //init = true;
-  client = newClient(channelName);
+  newClient(channelName);
 });
 
 // Communication from filter menu to add username to filter
