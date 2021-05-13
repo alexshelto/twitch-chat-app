@@ -11,12 +11,90 @@ const DOMPurify = require('dompurify');
 const { ipcRenderer } = require('electron');
 
 
+var client; // discord client reference 
+var changeClient;
+
+var init = true;
+var useChannel = 'summit1g';
+
+
+
+
+
+
+//newClient('#shroud');       // Creating the discord client
+if(init === true) {
+  client = newClient(useChannel);
+  init = false;
+}
+
+
+// Function that builds new discord client 
+function newClient(channelName) {
+  //creating tmi client
+  client = new tmi.Client({
+    connection: {
+      secure: true
+      //reconnect: true
+    },
+    channels: [channelName] //change to your channel 
+  });
+  client.connect();
+  return client;
+}
+
+
+
+  
+ipcRenderer.on('get-chat:channel', (event, channelName) => {
+
+  const element = document.createElement('h1');  //creating a new html element 
+
+  /*
+  element.innerText = channelClientSees;
+  document.getElementById('messages').remove();
+  body.appendChild(element);
+  */
+
+  client.disconnect();
+  client = null;
+  //init = true;
+  client = newClient(channelName);
+});
+
+
+
+/*
+        handling messages
+
+        --PARAMETERS--
+channel: String - Channel name
+userstate: Object - Userstate object
+message: String - Message received
+self: Boolean - Message was sent by the client
+*/
+client.on('message', async (channel, userstate, message, self) => { 
+  const content = {
+    id: userstate.id,
+    color: userstate['color'],
+    displayName: userstate['display-name'],
+    message: formatEmotes(message, userstate.emotes),
+  };
+
+  displayChatContent(content);
+  //console.log(content.color);
+});
+
+
+
+
+
+
 
 //sanitize text so we dont get any XXS issues 
 function sanitize(text) {
   return DOMPurify.sanitize(text, { FORBID_ATTR: [ 'onerror', 'onload' ], FORBID_TAGS: [ 'script', 'iframe' ] });
 }
-
 
 
 function displayChatContent(content) {
@@ -66,51 +144,3 @@ function formatEmotes(text, emotes) {
 
 
 
-let client; // discord client reference 
-
-// Function that builds new discord client 
-function newClient(channelName) {
-  //creating tmi client
-  client = new tmi.Client({
-    connection: {
-      secure: true,
-      reconnect: true
-    },
-    channels: [channelName] //change to your channel 
-  });
-}
-
-
-ipcRenderer.on('get-chat:channel', (event, channelName) => {
-  let channelClientSees = `#${channelName}`;
-  client = null;
-  newClient(channelClientSees);
-});
-  
-
-
-newClient('#shroud');       // Creating the discord client
-client.connect(); // connecting the client 
-//client.disconnect();
-
-/*
-        handling messages
-
-        --PARAMETERS--
-channel: String - Channel name
-userstate: Object - Userstate object
-message: String - Message received
-self: Boolean - Message was sent by the client
-*/
-client.on('message', async (channel, userstate, message, self) => { 
-  const content = {
-    id: userstate.id,
-    color: userstate['color'],
-    displayName: userstate['display-name'],
-    message: formatEmotes(message, userstate.emotes),
-  };
-
-  displayChatContent(content);
-  console.log(content.color);
-
-});
