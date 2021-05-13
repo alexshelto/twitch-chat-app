@@ -10,7 +10,6 @@ let chatBrowserWindow;
 
 
 function createWindow () {
-
   mainWindow = new BrowserWindow({
     width: 400,
     height: 400,
@@ -23,52 +22,49 @@ function createWindow () {
 
   //load the content file
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-
 }
 
-
-
-// Launching the main window
-app.on('ready',() => {
-  createWindow();
-
-  mainWindow.on('closed', () => app.quit());
-
-  const mainMenu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(mainMenu);
-
-});
 
 
 /*
-function createFilterWindow() {
-  filterWindow = new BrowserWindow(
-    {
-      width: 300,
-      height: 200,
-      title: 'Filter Chat
-    
-    }
-  );
-}
-*/
-
+ * Chat browser window
+ * User inputs channel name to get their live chat in the chat window
+ */
 function createChatBrowserWindow() {
-  chatBrowserWindow = new BrowserWindow(
-    {
+  chatBrowserWindow = new BrowserWindow({
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
       width: 300,
       height: 200,
       title: 'Select Channel'
     });
   // Loading the html file for the window
   chatBrowserWindow.loadURL(`file://${__dirname}/channelSelect.html`);
+  
+  // Garbage collect on close
+  //chatBrowserWindow.on('closed', () => chatBrowserWindow = null; )
 }
+
+//IPC
+ipcMain.on('get-chat:channel', (event, channelName) => {
+  mainWindow.webContents.send('get-chat:channel', channelName);
+  console.log(`received: ${channelName}`);
+  // Close the window after they enter and send the channel
+  chatBrowserWindow.close();
+});
+
+
+
+
+
 
 const menuTemplate = [
   {label: ''}, // empty for osx 
   // label 1
   {
-    label: 'chat',
+    label: 'Chat',
     submenu: [
       {
         label: 'Change Channel',
@@ -82,3 +78,34 @@ const menuTemplate = [
 ];
 
 
+// Main program / Window runtime
+app.on('ready',() => {
+
+  createWindow(); // Creating main program window
+
+  mainWindow.on('closed', () => app.quit()); // kill all windows on main window close
+
+  // Rendering menu bar and items
+  const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(mainMenu);
+});
+
+
+
+
+
+// Showing dev tools when not in production mode
+if (process.env.NODE_ENV !== 'production') {
+  menuTemplate.push({
+    label: 'View',
+    submenu: [
+      {
+        label: 'dev tool toggle',
+        accelerator: process.platform === 'darwin' ? 'Command+Alt+I' : 'Ctrl+Shift+I',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      }
+    ]
+  });
+}

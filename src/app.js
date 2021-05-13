@@ -8,6 +8,9 @@
 const tmi = require('tmi.js');
 const DOMPurify = require('dompurify');
 
+const { ipcRenderer } = require('electron');
+
+
 
 //sanitize text so we dont get any XXS issues 
 function sanitize(text) {
@@ -30,18 +33,6 @@ function displayChatContent(content) {
   </div>`;
 
   messages.appendChild(element); //append the new html element to that div 'messages'
-  comments.append(element);
-
-
-
-  /*
-  let len = messages.childElementCount; 
-  var msg_cap = 5;
-  if (len > msg_cap) {
-    messages.removeChild();
-    }
-  }
-  */
 
   
   //auto scroll
@@ -74,20 +65,33 @@ function formatEmotes(text, emotes) {
 }
 
 
-//creating tmi client
-const client = new tmi.Client({
-  connection: {
-    secure: true,
-    reconnect: true
-  },
-  channels: ['#ceremor'] //change to your channel 
+
+let client; // discord client reference 
+
+// Function that builds new discord client 
+function newClient(channelName) {
+  //creating tmi client
+  client = new tmi.Client({
+    connection: {
+      secure: true,
+      reconnect: true
+    },
+    channels: [channelName] //change to your channel 
+  });
+}
+
+
+ipcRenderer.on('get-chat:channel', (event, channelName) => {
+  let channelClientSees = `#${channelName}`;
+  client = null;
+  newClient(channelClientSees);
 });
-//connecting client to twitch chat channel
-client.connect();
+  
 
 
-
-
+newClient('#shroud');       // Creating the discord client
+client.connect(); // connecting the client 
+//client.disconnect();
 
 /*
         handling messages
@@ -109,6 +113,4 @@ client.on('message', async (channel, userstate, message, self) => {
   displayChatContent(content);
   console.log(content.color);
 
-  //dev debug stuff
-  // console.log(`${userstate['display-name']}: ${message}`);
 });

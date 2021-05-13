@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -17,7 +18,7 @@ body {
 #messages {
   margin: 2vh;
   height: 92vh;
-  overflow-y: auto;  /*auto scroll*/
+  overflow-y: auto;  /*auto scroll*/ 
   scrollbar-width: none;
   outline: 8vh solid rgba(42, 230, 36, 0.6);
 }
