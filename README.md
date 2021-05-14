@@ -11,6 +11,7 @@ desktop electron app to load twitch chat messages
 - [x] send package to front end to display
 - [ ] clean up styling 
 - [ ] minified packages and turn off node integration
+- [ ] Change to twitch IRC instead of tmi js? 
 
 
 
